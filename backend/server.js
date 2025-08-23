@@ -11,11 +11,8 @@ dotenv.config()
 const { Pool } = pkg
 const pool = new Pool()
 const app = express()
-app.get('/', (req, res) => {
-  res.json({
-    message: 'Hello, world!',
-  })
-})
+// Health check so GET in browser works
+app.get('/api/health', (req, res) => res.json({ ok: true }));
 
 
 app.set('trust proxy', 1)
