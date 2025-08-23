@@ -1,0 +1,6 @@
+﻿{
+  "routes": [
+    { "route": "/api/*", "rewrite": "https:///api/*" }
+  ],
+  "navigationFallback": { "rewrite": "/index.html" }
+}
