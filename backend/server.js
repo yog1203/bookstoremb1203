@@ -16,6 +16,30 @@ app.get('/api/health', (req, res) => res.json({ ok: true }));
 
 
 app.set('trust proxy', 1)
+
+// (Optional) request logging to verify what's coming in
+app.use((req, _res, next) => {
+  const xfproto = String(req.headers['x-forwarded-proto'] || '');
+  console.log(`[${new Date().toISOString()}] ${req.method} ${req.originalUrl} secure=${req.secure} xfp=${xfproto}`);
+  next();
+});
+
+// ✅ 2) Enforce HTTPS correctly (only in production and only if truly not HTTPS)
+app.use((req, res, next) => {
+  if (process.env.NODE_ENV === 'production') {
+    const xfproto = String(req.headers['x-forwarded-proto'] || '').toLowerCase();
+    const isHttps = req.secure || xfproto.includes('https');
+    if (!isHttps) {
+      // Prefer redirect instead of blocking with JSON
+      const host = req.headers['x-forwarded-host'] || req.headers.host;
+      return res.redirect(301, `https://${host}${req.originalUrl}`);
+      // If you really want to block instead, use:
+      // return res.status(403).json({ ok:false, error:'SSL/TLS required' });
+    }
+  }
+  next();
+});
+
 app.use(cors())
 app.use(helmet())
 app.use(compression())
