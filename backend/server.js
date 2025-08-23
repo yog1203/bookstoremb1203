@@ -10,14 +10,14 @@ import compression from 'compression'
 dotenv.config()
 const { Pool } = pkg
 const pool = new Pool()
-
+const app = express()
 app.get('/', (req, res) => {
   res.json({
     message: 'Hello, world!',
   })
 })
 
-const app = express()
+
 app.set('trust proxy', 1)
 app.use(cors())
 app.use(helmet())
