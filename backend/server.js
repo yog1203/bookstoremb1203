@@ -9,7 +9,7 @@ import compression from 'compression'
 
 dotenv.config()
 const { Pool } = pkg
-const pool = new Pool()
+// const pool = new Pool()
 const app = express()
 
 // CORS: set this to your frontend’s URL after you deploy the static site
