@@ -22,6 +22,15 @@ const pool = new Pool({
   ssl: process.env.PG_NO_SSL ? false : { rejectUnauthorized: false } // Render PG requires SSL
 });
 
+// Example simple API to test DB connection
+app.get('/api/hello', async (_, res) => {
+  try {
+    const r = await pool.query('SELECT NOW() as now');
+    res.json({ message: 'API OK', now: r.rows[0].now });
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
 
 // Health check so GET in browser works
 app.get('/api/health', (req, res) => res.json({ ok: true }));
