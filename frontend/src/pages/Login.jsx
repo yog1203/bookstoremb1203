@@ -7,26 +7,10 @@ export default function Login(){
   const [password,setPassword] = useState('')
   const [err,setErr] = useState('')
   const nav = useNavigate()
-  async function submit(e) {
-  e.preventDefault();
-  setErr('');
-  try {
-    const d = await api('/api/auth/login', {
-      method: 'POST',
-      body: { email, password },
-    });
-    localStorage.setItem('token', d.token);
-    localStorage.setItem('user', JSON.stringify(d.user));
-    nav('/app');
-  } catch (err) {
-    console.error(err);
-    setErr(err.message || 'Login failed');
-  }
-}
-  // async function submit(e){ e.preventDefault(); setErr('')
-  //   try{ const d = await api('/api/auth/login', { method:'POST', body:{ email, password } })
-  //     localStorage.setItem('token', d.token); localStorage.setItem('user', JSON.stringify(d.user)); nav('/app')
-  //   }catch(e){ setErr(e.message) } }
+  async function submit(e){ e.preventDefault(); setErr('')
+    try{ const d = await api('/api/auth/login', { method:'POST', body:{ email, password } })
+      localStorage.setItem('token', d.token); localStorage.setItem('user', JSON.stringify(d.user)); nav('/app')
+    }catch(e){ setErr(e.message) } }
   return (
     <div className="container">
       <div className="card section" style={{ maxWidth: 420, margin: '80px auto' }}>
