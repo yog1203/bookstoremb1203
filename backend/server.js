@@ -45,10 +45,17 @@ app.use(helmet())
 app.use(compression())
 app.use(express.json())
 
-app.get('/api', async (req, res) => {
-  try { const now = await pool.query('SELECT NOW()'); res.json({ ok:true, message:`API OK @ ${now.rows[0].now}` }) }
-  catch (e) { res.status(500).json({ ok:false, error:e.message }) }
-})
+// app.get('/api', async (req, res) => {
+//   try { const now = await pool.query('SELECT NOW()'); res.json({ ok:true, message:`API OK @ ${now.rows[0].now}` }) }
+//   catch (e) { res.status(500).json({ ok:false, error:e.message }) }
+// })
+
+// app.get('/api', async (req, res) => {
+//   try { const now = await pool.query('SELECT NOW()'); res.json({ ok:true, message:`API OK @ ${now.rows[0].now}` }) }
+//   catch (e) { res.status(500).json({ ok:false, error:e.message }) }
+// })
+
+app.get('/api', (req, res) => res.json({ ok: true }));
 
 function signToken(user){
   return jwt.sign({ sub:user.id, email:user.email, name:user.name, role:user.role }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRES || '4h' })
