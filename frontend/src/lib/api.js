@@ -64,15 +64,20 @@
 // lib/api.js
 export async function api(path, { method='GET', body, headers } = {}) {
   const base = import.meta.env.VITE_API_URL || '';
-
 // frontend api helper
 const res = await fetch(import.meta.env.VITE_API_URL + '/api/auth/login', {
   method: 'POST',
   headers: { 'Content-Type': 'application/json' },
   body: JSON.stringify({ email, password }),
-  // ❌ remove this line
-  // credentials: 'include'
 });
+
+// export async function api(path, { method = 'GET', body, headers } = {}) {
+//   const base = import.meta.env.VITE_API_URL || ''; // e.g. https://your-api.example.com
+//   const res = await fetch(base + path, {
+//     method,
+//     headers: { 'Content-Type': 'application/json', ...(headers || {}) },
+//   });
+  
 
   
   // const res = await fetch(base + path, {
@@ -88,5 +93,6 @@ const res = await fetch(import.meta.env.VITE_API_URL + '/api/auth/login', {
   if (!res.ok) throw new Error(data.error || `HTTP ${res.status}`);
   return data;
 }
+
 
 
