@@ -64,12 +64,23 @@
 // lib/api.js
 export async function api(path, { method='GET', body, headers } = {}) {
   const base = import.meta.env.VITE_API_URL || '';
-  const res = await fetch(base + path, {
-    method,
-    headers: { 'Content-Type': 'application/json', ...(headers||{}) },
-    body: body ? JSON.stringify(body) : undefined,
-    // credentials: 'include',  // ❌ remove unless you use cookies
-  });
+
+// frontend api helper
+const res = await fetch(import.meta.env.VITE_API_URL + '/api/auth/login', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ email, password }),
+  // ❌ remove this line
+  // credentials: 'include'
+});
+
+  
+  // const res = await fetch(base + path, {
+  //   method,
+  //   headers: { 'Content-Type': 'application/json', ...(headers||{}) },
+  //   body: body ? JSON.stringify(body) : undefined,
+  //   // credentials: 'include',  // ❌ remove unless you use cookies
+  // });
 
   const ct = res.headers.get('content-type') || '';
   const txt = await res.text();
