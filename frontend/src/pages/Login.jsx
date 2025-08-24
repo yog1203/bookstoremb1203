@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { api } from "../lib/api";   // <--- your helper file
 
 export default function Login() {
-  const [email, setEmail] = useState("");   // ✅ defines email
-  const [password, setPassword] = useState(""); // ✅ defines password
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [err, setErr] = useState("");
   const nav = useNavigate();
 
@@ -12,24 +13,14 @@ export default function Login() {
     setErr("");
 
     try {
-      const res = await fetch(
-        import.meta.env.VITE_API_URL + "/api/auth/login",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email, password }), // ✅ values come from state
-        }
-      );
+      // 🔑 This is where your line goes
+      const d = await api("/api/auth/login", {
+        method: "POST",
+        body: { email, password },
+      });
 
-      const data = await res.json();
-
-      if (!res.ok) {
-        throw new Error(data.error || "Login failed");
-      }
-
-      localStorage.setItem("token", data.token);
-      localStorage.setItem("user", JSON.stringify(data.user));
-
+      localStorage.setItem("token", d.token);
+      localStorage.setItem("user", JSON.stringify(d.user));
       nav("/app");
     } catch (e) {
       setErr(e.message);
