@@ -10,11 +10,18 @@ import compression from 'compression'
 dotenv.config()
 const { Pool } = pkg
 // const pool = new Pool()
-const app = express()
+
+
+const app = express();
+app.use(cors({ origin: process.env.FRONTEND_URL || '*', credentials: true }));
+app.use(express.json());
+
+
+// const app = express()
 
 // CORS: set this to your frontend’s URL after you deploy the static site
-const ORIGIN = process.env.ORIGIN || '*';
-app.use(cors({ origin: ORIGIN, credentials: true }));
+// const ORIGIN = process.env.ORIGIN || '*';
+// app.use(cors({ origin: ORIGIN, credentials: true }));
 
 // Postgres
 const pool = new Pool({
