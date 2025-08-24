@@ -11,6 +11,18 @@ dotenv.config()
 const { Pool } = pkg
 const pool = new Pool()
 const app = express()
+
+// CORS: set this to your frontend’s URL after you deploy the static site
+const ORIGIN = process.env.ORIGIN || '*';
+app.use(cors({ origin: ORIGIN, credentials: true }));
+
+// Postgres
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: process.env.PG_NO_SSL ? false : { rejectUnauthorized: false } // Render PG requires SSL
+});
+
+
 // Health check so GET in browser works
 app.get('/api/health', (req, res) => res.json({ ok: true }));
 
